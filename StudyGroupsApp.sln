@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyGroupsApp", "StudyGroupsApp\StudyGroupsApp.csproj", "{521091EA-4A19-4CDF-98DD-F2D79CFB2179}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyGroupsApp.Tests", "StudyGroupsApp.Tests\StudyGroupsApp.Tests.csproj", "{7BA857B9-A55D-4FD5-948C-EE6260E89867}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComponentTests", "ComponentTests\ComponentTests.csproj", "{34DDC8C2-768B-4661-A2E7-8DA38A617E3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{521091EA-4A19-4CDF-98DD-F2D79CFB2179}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{521091EA-4A19-4CDF-98DD-F2D79CFB2179}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{521091EA-4A19-4CDF-98DD-F2D79CFB2179}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BA857B9-A55D-4FD5-948C-EE6260E89867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BA857B9-A55D-4FD5-948C-EE6260E89867}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BA857B9-A55D-4FD5-948C-EE6260E89867}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BA857B9-A55D-4FD5-948C-EE6260E89867}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34DDC8C2-768B-4661-A2E7-8DA38A617E3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34DDC8C2-768B-4661-A2E7-8DA38A617E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34DDC8C2-768B-4661-A2E7-8DA38A617E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34DDC8C2-768B-4661-A2E7-8DA38A617E3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
