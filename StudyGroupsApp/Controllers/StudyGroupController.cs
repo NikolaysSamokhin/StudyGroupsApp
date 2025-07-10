@@ -6,7 +6,8 @@ using StudyGroupsApp.enums;
 namespace StudyGroupsApp.Controllers;
 
 /// <summary>
-/// Controller for managing study groups.
+/// API controller for managing study groups.  
+/// Provides endpoints to create, retrieve, join, and leave study groups.  
 /// </summary>
 [ApiController]
 [Route("study-groups")]
@@ -15,8 +16,14 @@ public class StudyGroupController(IStudyGroupRepository studyGroupRepository) : 
     /// <summary>
     /// Creates a new study group.
     /// </summary>
-    /// <param name="studyGroup">The study group to create.</param>
-    /// <returns>Action result indicating the outcome of the operation.</returns>
+    /// <param name="studyGroup">
+    /// The study group to be created.  
+    /// Required fields: Name (5-30 characters), Subject (Math, Chemistry, or Physics), and CreateDate.
+    /// </param>
+    /// <returns>
+    /// Returns <see cref="OkResult"/> (200) on success.  
+    /// May return 400 if input validation is added in the future.
+    /// </returns>
     [HttpPost]
     public async Task<IActionResult> CreateStudyGroup([FromBody] StudyGroup studyGroup)
     {
@@ -25,12 +32,14 @@ public class StudyGroupController(IStudyGroupRepository studyGroupRepository) : 
     }
 
     /// <summary>
-    /// Gets a list of all study groups with optional filtering by subject and sorting.
-    /// Example: /study-groups?subject=Math&amp;sort=desc
+    /// Retrieves a list of study groups, optionally filtered by subject and sorted by creation date.
     /// </summary>
-    /// <param name="subject">Optional subject to filter study groups.</param>
-    /// <param name="sort">Sort order: "asc" or "desc". Default is "asc".</param>
-    /// <returns>List of study groups.</returns>
+    /// <param name="subject">Optional subject filter (Math, Chemistry, or Physics).</param>
+    /// <param name="sort">Optional sort order: "asc" (default) or "desc" based on creation date.</param>
+    /// <returns>
+    /// A list of <see cref="StudyGroup"/> objects matching the filter and sort criteria.  
+    /// Returns 200 OK even if the list is empty.
+    /// </returns>
     [HttpGet]
     public async Task<IActionResult> GetStudyGroups(
         [FromQuery] Subject? subject,
@@ -47,11 +56,14 @@ public class StudyGroupController(IStudyGroupRepository studyGroupRepository) : 
     }
 
     /// <summary>
-    /// Adds a user to a study group.
+    /// Adds a user to the specified study group.
     /// </summary>
     /// <param name="id">The ID of the study group.</param>
-    /// <param name="userId">The ID of the user to add.</param>
-    /// <returns>Action result indicating the outcome of the operation.</returns>
+    /// <param name="userId">The ID of the user who is joining.</param>
+    /// <returns>
+    /// Returns <see cref="OkResult"/> (200) on success.  
+    /// No error returned if user already joined or doesn't exist.
+    /// </returns>
     [HttpPost("{id:int}/join")]
     public async Task<IActionResult> JoinStudyGroup(int id, [FromQuery] int userId)
     {
@@ -60,11 +72,14 @@ public class StudyGroupController(IStudyGroupRepository studyGroupRepository) : 
     }
 
     /// <summary>
-    /// Removes a user from a study group.
+    /// Removes a user from the specified study group.
     /// </summary>
     /// <param name="id">The ID of the study group.</param>
     /// <param name="userId">The ID of the user to remove.</param>
-    /// <returns>Action result indicating the outcome of the operation.</returns>
+    /// <returns>
+    /// Returns <see cref="OkResult"/> (200) on success.  
+    /// No error returned if user was not part of the group.
+    /// </returns>
     [HttpDelete("{id:int}/leave")]
     public async Task<IActionResult> LeaveStudyGroup(int id, [FromQuery] int userId)
     {

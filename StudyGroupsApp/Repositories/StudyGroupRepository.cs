@@ -18,6 +18,11 @@ public class StudyGroupRepository(AppDbContext context) : IStudyGroupRepository
     /// <param name="studyGroup">The study group to create.</param>
     public async Task CreateStudyGroupAsync(StudyGroup studyGroup)
     {
+        var exists = await _context.StudyGroups.AnyAsync(g =>  g.Subject == studyGroup.Subject);
+
+        if (exists)
+            throw new InvalidOperationException("A study group with the same name and subject already exists.");
+
         _context.StudyGroups.Add(studyGroup);
         await _context.SaveChangesAsync();
     }

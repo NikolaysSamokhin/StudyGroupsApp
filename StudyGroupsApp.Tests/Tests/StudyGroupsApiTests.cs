@@ -1,6 +1,5 @@
-using System.Net.Http.Json;
 using StudyGroupsApp.enums;
-using StudyGroupsApp.Models;
+using StudyGroupsApp.Tests.Client;
 
 namespace StudyGroupsApp.Tests.Tests;
 
@@ -8,46 +7,40 @@ namespace StudyGroupsApp.Tests.Tests;
 public class StudyGroupsApiTests
 {
     private HttpClient _client;
+    private StudyGroupApiClient _apiClient;
 
     [SetUp]
     public void SetUp()
     {
-        // Подключаемся к уже запущенному приложению
         _client = new HttpClient
         {
-            BaseAddress = new Uri("http://localhost:5000") // Убедись, что порт совпадает
+            BaseAddress = new Uri("http://localhost:5000")
         };
+        _apiClient = new StudyGroupApiClient(_client);
     }
 
     [Test]
-    public async Task GetAllStudyGroups_ReturnsSuccessAndNonEmptyList()
+    public async Task GetAllStudyGroupsReturnsSuccessAndNonEmptyListAsyncTest()
     {
-        // Act
-        var response = await _client.GetAsync("/api/study-groups");
-
-        // Assert
-        Assert.IsTrue(response.IsSuccessStatusCode);
-
-        var groups = await response.Content.ReadFromJsonAsync<List<StudyGroup>>();
+        var groups = await _apiClient.GetAllStudyGroupsAsync();
         Assert.IsNotNull(groups);
         Assert.IsNotEmpty(groups);
     }
 
     [Test]
-    public async Task CreateStudyGroup_ReturnsCreated()
+    public async Task CreateStudyGroupReturnsCreatedAsyncTest()
     {
-        // Arrange
+        var timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss"); // e.g. 20250710145530
+        var name = $"Group_{timestamp}";
+        
         var newGroup = new
         {
-            Name = "Physics Group",
+            Name = name,
             Subject = Subject.Physics,
             CreateDate = DateTime.UtcNow
         };
 
-        // Act
-        var response = await _client.PostAsJsonAsync("/api/studygroups", newGroup);
-
-        // Assert
+        var response = await _apiClient.CreateStudyGroupAsync(newGroup);
         Assert.IsTrue(response.IsSuccessStatusCode);
     }
 
