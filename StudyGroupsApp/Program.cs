@@ -75,7 +75,7 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<AppDbContext>();
 
     // Seed initial data
-    DbInitializer.Seed(context);
+    //DbInitializer.Seed(context);
 }
 
 app.Run();
