@@ -34,6 +34,14 @@ public class StudyGroup
         Users = users ?? new List<User>();
     }
 
+    public StudyGroup(string name, Subject subject, DateTime createDate, List<User> users) : this()
+    {
+        Name = name;
+        Subject = subject;
+        CreateDate = createDate;
+        Users = users;
+    }
+
     /// <summary>
     /// Gets or sets the unique identifier of the study group.
     /// </summary>

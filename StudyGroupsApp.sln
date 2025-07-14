@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyGroupsApp", "StudyGrou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyGroupsApp.Tests", "StudyGroupsApp.Tests\StudyGroupsApp.Tests.csproj", "{7BA857B9-A55D-4FD5-948C-EE6260E89867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComponentTests", "ComponentTests\ComponentTests.csproj", "{34DDC8C2-768B-4661-A2E7-8DA38A617E3E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{34DDC8C2-768B-4661-A2E7-8DA38A617E3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

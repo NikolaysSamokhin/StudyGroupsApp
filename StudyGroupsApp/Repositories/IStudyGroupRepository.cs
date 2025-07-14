@@ -40,4 +40,9 @@ public interface IStudyGroupRepository
     /// <param name="studyGroupId">The ID of the study group.</param>
     /// <param name="userId">The ID of the user.</param>
     Task LeaveStudyGroupAsync(int studyGroupId, int userId);
+    
+    /// <summary>
+    /// Deletes all study groups asynchronously.
+    /// </summary>
+    Task DeleteAllStudyGroupsAsync();
 }

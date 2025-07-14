@@ -5,16 +5,7 @@ namespace StudyGroupsApp.enums;
 /// </summary>
 public enum Subject
 {
-    /// <summary>
-    /// Mathematics subject.
-    /// </summary>
     Math,
-    /// <summary>
-    /// Chemistry subject.
-    /// </summary>
     Chemistry,
-    /// <summary>
-    /// Physics subject.
-    /// </summary>
     Physics
 }

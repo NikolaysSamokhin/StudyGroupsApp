@@ -114,4 +114,16 @@ public class StudyGroupController(IStudyGroupRepository studyGroupRepository) : 
             return NotFound(ex.Message);
         }
     }
+    
+    
+    /// <summary>
+    /// Deletes all study groups.
+    /// </summary>
+    /// <returns>204 No Content.</returns>
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAllStudyGroups()
+    {
+        await studyGroupRepository.DeleteAllStudyGroupsAsync();
+        return NoContent();
+    }
 }

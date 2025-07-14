@@ -8,9 +8,9 @@ namespace StudyGroupsApp.Repositories;
 /// <summary>
 /// Repository for managing study groups.
 /// </summary>
-public class StudyGroupRepository(AppDbContext context) : IStudyGroupRepository
+public class StudyGroupRepository(AppDbContext? context) : IStudyGroupRepository
 {
-    private readonly AppDbContext _context = context;
+    private readonly AppDbContext? _context = context;
 
     /// <summary>
     /// Creates a new study group asynchronously.
@@ -113,6 +113,16 @@ public class StudyGroupRepository(AppDbContext context) : IStudyGroupRepository
             throw new InvalidOperationException("User is not a member of the study group.");
 
         group.Users.Remove(user);
+        await _context.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Deletes all study groups asynchronously.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous delete operation.</returns>
+    public async Task DeleteAllStudyGroupsAsync()
+    {
+        _context.StudyGroups.RemoveRange(_context.StudyGroups);
         await _context.SaveChangesAsync();
     }
 }
