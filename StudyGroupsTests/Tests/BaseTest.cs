@@ -4,7 +4,7 @@ using StudyGroupsApp.enums;
 using StudyGroupsApp.Models;
 using StudyGroupsApp.Tests.Client;
 
-namespace StudyGroupsApp.Tests.Tests;
+namespace StudyGroupsTests.Tests;
 
 public class BaseTest
 {

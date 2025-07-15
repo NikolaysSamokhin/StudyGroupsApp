@@ -5,7 +5,7 @@ using StudyGroupsApp.enums;
 using StudyGroupsApp.Models;
 using StudyGroupsApp.Repositories;
 
-namespace StudyGroupsApp.Tests.Tests.Unit;
+namespace StudyGroupsTests.Tests.Unit;
 
 [TestFixture]
 public class StudyGroupRepositoryUnitTests
@@ -24,6 +24,7 @@ public class StudyGroupRepositoryUnitTests
         _repository = new StudyGroupRepositoryUnit(_context);
     }
 
+    [Test]
     public async Task CreateStudyGroupWithValidDataSavesSuccessfullyAsyncTest()
     {
         var group = new StudyGroup
@@ -107,28 +108,28 @@ public class StudyGroupRepositoryUnitTests
     [Test]
     public async Task SearchStudyGroupsBySubjectReturnsCorrectAsyncTest()
     {
-        _context!.StudyGroups.Add(
+        _context!.StudyGroups.AddRange(
             new StudyGroup
             {
                 Name = "MathG",
                 Subject = Subject.Math,
-                CreateDate = DateTime.UtcNow, 
+                CreateDate = DateTime.UtcNow,
                 Users = []
-            });
-        _context.StudyGroups.Add(
+            },
             new StudyGroup
             {
-                Name = "ChemG", 
-                Subject = Subject.Chemistry, 
-                CreateDate = DateTime.UtcNow, 
+                Name = "ChemG",
+                Subject = Subject.Chemistry,
+                CreateDate = DateTime.UtcNow,
                 Users = []
-            });
+            }
+        );
         await _context.SaveChangesAsync();
 
         var result = await _repository!.SearchStudyGroupsAsync(Subject.Chemistry);
         result.Should().OnlyContain(g => g.Subject == Subject.Chemistry);
     }
-    
+
     [Test]
     public void SearchStudyGroupsWithNoMatchesThrowsTest()
     {
@@ -136,6 +137,7 @@ public class StudyGroupRepositoryUnitTests
         act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task JoinStudyGroupWithValidDataAddsUserAsyncTest()
     {
         var user = new User { Id = 10, Name = "Mike" };
@@ -249,10 +251,10 @@ public class StudyGroupRepositoryUnitTests
         _context.StudyGroups.Add(group);
         await _context.SaveChangesAsync();
 
-        Func<Task> act = async () => await _repository!.LeaveStudyGroupAsync(7, 15);
+        var act = async () => await _repository!.LeaveStudyGroupAsync(7, 15);
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
-    
+
     [Test]
     public void LeaveStudyGroupWithNonexistentGroupThrowsTest()
     {
@@ -284,15 +286,21 @@ public class StudyGroupRepositoryUnitTests
     [Test]
     public async Task DeleteAllStudyGroupsRemovesAllAsyncTest()
     {
-        _context!.StudyGroups.Add(new StudyGroup
-            { Name = "A", Subject = Subject.Math, CreateDate = DateTime.UtcNow, Users = [] });
-        _context!.StudyGroups.Add(new StudyGroup(name: "B", subject: Subject.Chemistry, createDate: DateTime.UtcNow,
-            users: []));
+        _context!.StudyGroups.AddRange(
+            new StudyGroup { Name = "A", Subject = Subject.Math, CreateDate = DateTime.UtcNow, Users = [] },
+            new StudyGroup { Name = "B", Subject = Subject.Chemistry, CreateDate = DateTime.UtcNow, Users = [] }
+        );
         await _context.SaveChangesAsync();
 
         await _repository!.DeleteAllStudyGroupsAsync();
 
         var count = await _context.StudyGroups.CountAsync();
         count.Should().Be(0);
+    }
+    
+    [TearDown]
+    public void TearDown()
+    {
+        _context?.Dispose();
     }
 }

@@ -4,7 +4,7 @@ using FluentAssertions.Execution;
 using StudyGroupsApp.enums;
 using StudyGroupsApp.Models;
 
-namespace StudyGroupsApp.Tests.Tests.Component;
+namespace StudyGroupsTests.Tests.Component;
 
 [TestFixture]
 public class StudyGroupControllerComponentTests : BaseTest

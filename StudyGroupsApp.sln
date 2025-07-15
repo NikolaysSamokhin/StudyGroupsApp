@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyGroupsApp", "StudyGroupsApp\StudyGroupsApp.csproj", "{521091EA-4A19-4CDF-98DD-F2D79CFB2179}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyGroupsApp.Tests", "StudyGroupsApp.Tests\StudyGroupsApp.Tests.csproj", "{7BA857B9-A55D-4FD5-948C-EE6260E89867}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyGroupsTests", "StudyGroupsTests\StudyGroupsTests.csproj", "{3AE34A12-03ED-4DE6-85DB-6C4E349538FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +14,9 @@ Global
 		{521091EA-4A19-4CDF-98DD-F2D79CFB2179}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{521091EA-4A19-4CDF-98DD-F2D79CFB2179}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{521091EA-4A19-4CDF-98DD-F2D79CFB2179}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BA857B9-A55D-4FD5-948C-EE6260E89867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7BA857B9-A55D-4FD5-948C-EE6260E89867}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7BA857B9-A55D-4FD5-948C-EE6260E89867}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7BA857B9-A55D-4FD5-948C-EE6260E89867}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AE34A12-03ED-4DE6-85DB-6C4E349538FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AE34A12-03ED-4DE6-85DB-6C4E349538FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AE34A12-03ED-4DE6-85DB-6C4E349538FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AE34A12-03ED-4DE6-85DB-6C4E349538FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
