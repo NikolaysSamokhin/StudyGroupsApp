@@ -153,7 +153,8 @@ public class StudyGroupRepositoryUnitTests
         await _context.SaveChangesAsync();
 
         await _repository!.JoinStudyGroupAsync(3, 10);
-        var updated = await _context.StudyGroups.Include(g => g.Users).FirstAsync(g => g.StudyGroupId == 3);
+        var updated = await _context.StudyGroups.Include(g => g.Users)
+            .FirstAsync(g => g.StudyGroupId == 3);
 
         updated.Users.Should().Contain(u => u.Id == 10);
     }
@@ -164,7 +165,7 @@ public class StudyGroupRepositoryUnitTests
         _context!.Users.Add(new User { Id = 11, Name = "Tom" });
         _context.SaveChanges();
 
-        Func<Task> act = async () => await _repository!.JoinStudyGroupAsync(999, 11);
+        var act = async () => await _repository!.JoinStudyGroupAsync(999, 11);
         act.Should().ThrowAsync<InvalidOperationException>();
     }
 
@@ -182,7 +183,7 @@ public class StudyGroupRepositoryUnitTests
         _context!.StudyGroups.Add(group);
         await _context.SaveChangesAsync();
 
-        Func<Task> act = async () => await _repository!.JoinStudyGroupAsync(4, 999);
+        var act = async () => await _repository!.JoinStudyGroupAsync(4, 999);
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
@@ -286,7 +287,7 @@ public class StudyGroupRepositoryUnitTests
         _context!.StudyGroups.Add(new StudyGroup
             { Name = "A", Subject = Subject.Math, CreateDate = DateTime.UtcNow, Users = [] });
         _context!.StudyGroups.Add(new StudyGroup(name: "B", subject: Subject.Chemistry, createDate: DateTime.UtcNow,
-            users: new List<User>()));
+            users: []));
         await _context.SaveChangesAsync();
 
         await _repository!.DeleteAllStudyGroupsAsync();
