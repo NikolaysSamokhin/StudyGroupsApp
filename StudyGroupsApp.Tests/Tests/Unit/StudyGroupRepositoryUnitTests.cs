@@ -1,15 +1,17 @@
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using StudyGroupsApp.Data;
 using StudyGroupsApp.enums;
 using StudyGroupsApp.Models;
 using StudyGroupsApp.Repositories;
 
-namespace ComponentTests.Tests;
+namespace StudyGroupsApp.Tests.Tests.Unit;
 
-public class StudyGroupRepositoryTests
+[TestFixture]
+public class StudyGroupRepositoryUnitTests
 {
     private AppDbContext? _context;
-    private StudyGroupRepository? _repository;
+    private StudyGroupRepositoryUnit? _repository;
 
     [SetUp]
     public void Setup()
@@ -19,7 +21,7 @@ public class StudyGroupRepositoryTests
             .Options;
 
         _context = new AppDbContext(options);
-        _repository = new StudyGroupRepository(_context);
+        _repository = new StudyGroupRepositoryUnit(_context);
     }
 
     public async Task CreateStudyGroupWithValidDataSavesSuccessfullyAsyncTest()
@@ -35,9 +37,11 @@ public class StudyGroupRepositoryTests
 
         await _repository!.CreateStudyGroupAsync(group);
 
-        Assert.That(await _context!.StudyGroups.CountAsync(), Is.EqualTo(1));
+        var count = await _context!.StudyGroups.CountAsync();
+        count.Should().Be(1);
     }
 
+    [Test]
     public void CreateStudyGroupWithInvalidSubjectThrowsTest()
     {
         var group = new StudyGroup
@@ -49,10 +53,11 @@ public class StudyGroupRepositoryTests
             Users = []
         };
 
-        Assert.ThrowsAsync<ArgumentException>(async () =>
-            await _repository!.CreateStudyGroupAsync(group));
+        var act = async () => await _repository!.CreateStudyGroupAsync(group);
+        act.Should().ThrowAsync<ArgumentException>();
     }
 
+    [Test]
     public async Task CreateStudyGroupWithDuplicateSubjectThrowsAsyncTest()
     {
         var group1 = new StudyGroup
@@ -66,18 +71,23 @@ public class StudyGroupRepositoryTests
         {
             Name = "Chem2",
             Subject = Subject.Chemistry,
-            CreateDate = DateTime.UtcNow, Users = []
+            CreateDate = DateTime.UtcNow,
+            Users = []
         };
 
         await _repository!.CreateStudyGroupAsync(group1);
-        Assert.ThrowsAsync<InvalidOperationException>(async () => await _repository.CreateStudyGroupAsync(group2));
+        var act = async () => await _repository.CreateStudyGroupAsync(group2);
+        await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public void GetStudyGroupsWhenEmptyThrowsTest()
     {
-        Assert.ThrowsAsync<InvalidOperationException>(async () => await _repository!.GetStudyGroupsAsync());
+        Func<Task> act = async () => await _repository!.GetStudyGroupsAsync();
+        act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task GetStudyGroupsReturnsAllAsyncTest()
     {
         var group = new StudyGroup
@@ -91,33 +101,39 @@ public class StudyGroupRepositoryTests
         await _context.SaveChangesAsync();
 
         var result = await _repository!.GetStudyGroupsAsync();
-        Assert.That(result.Count, Is.EqualTo(1));
+        result.Should().HaveCount(1);
     }
 
+    [Test]
     public async Task SearchStudyGroupsBySubjectReturnsCorrectAsyncTest()
     {
-        _context!.StudyGroups.Add(new StudyGroup
-            { Name = "MathG",
+        _context!.StudyGroups.Add(
+            new StudyGroup
+            {
+                Name = "MathG",
                 Subject = Subject.Math,
-                CreateDate = DateTime.UtcNow,
+                CreateDate = DateTime.UtcNow, 
                 Users = []
             });
-        _context.StudyGroups.Add(new StudyGroup
-            { Name = "ChemG",
-                Subject = Subject.Chemistry,
-                CreateDate = DateTime.UtcNow,
+        _context.StudyGroups.Add(
+            new StudyGroup
+            {
+                Name = "ChemG", 
+                Subject = Subject.Chemistry, 
+                CreateDate = DateTime.UtcNow, 
                 Users = []
             });
         await _context.SaveChangesAsync();
 
         var result = await _repository!.SearchStudyGroupsAsync(Subject.Chemistry);
-        Assert.That(result.All(g => g.Subject == Subject.Chemistry));
+        result.Should().OnlyContain(g => g.Subject == Subject.Chemistry);
     }
-
+    
+    [Test]
     public void SearchStudyGroupsWithNoMatchesThrowsTest()
     {
-        Assert.ThrowsAsync<InvalidOperationException>(async () =>
-            await _repository!.SearchStudyGroupsAsync(Subject.Physics));
+        var act = async () => await _repository!.SearchStudyGroupsAsync(Subject.Physics);
+        act.Should().ThrowAsync<InvalidOperationException>();
     }
 
     public async Task JoinStudyGroupWithValidDataAddsUserAsyncTest()
@@ -137,38 +153,41 @@ public class StudyGroupRepositoryTests
         await _context.SaveChangesAsync();
 
         await _repository!.JoinStudyGroupAsync(3, 10);
-        var updated = await _context.StudyGroups.Include(g => 
-            g.Users).FirstAsync(g => g.StudyGroupId == 3);
+        var updated = await _context.StudyGroups.Include(g => g.Users)
+            .FirstAsync(g => g.StudyGroupId == 3);
 
-        Assert.That(updated.Users.Any(u => u.Id == 10));
+        updated.Users.Should().Contain(u => u.Id == 10);
     }
 
+    [Test]
     public void JoinStudyGroupWithNonexistentGroupThrowsTest()
     {
         _context!.Users.Add(new User { Id = 11, Name = "Tom" });
         _context.SaveChanges();
 
-        Assert.ThrowsAsync<InvalidOperationException>(async () =>
-            await _repository!.JoinStudyGroupAsync(999, 11));
+        var act = async () => await _repository!.JoinStudyGroupAsync(999, 11);
+        act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task JoinStudyGroupWithNonexistentUserThrowsAsyncTest()
     {
         var group = new StudyGroup
         {
             StudyGroupId = 4,
             Name = "Chem",
-            Subject = Subject.Chemistry, 
+            Subject = Subject.Chemistry,
             CreateDate = DateTime.UtcNow,
             Users = []
         };
         _context!.StudyGroups.Add(group);
         await _context.SaveChangesAsync();
 
-        Assert.ThrowsAsync<InvalidOperationException>(async () =>
-            await _repository!.JoinStudyGroupAsync(4, 999));
+        var act = async () => await _repository!.JoinStudyGroupAsync(4, 999);
+        await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task JoinStudyGroupWithUserAlreadyInThrowsAsyncTest()
     {
         var user = new User { Id = 13, Name = "Leo" };
@@ -185,16 +204,20 @@ public class StudyGroupRepositoryTests
         _context.StudyGroups.Add(group);
         await _context.SaveChangesAsync();
 
-        Assert.ThrowsAsync<InvalidOperationException>(async () =>
-            await _repository!.JoinStudyGroupAsync(5, 13));
+        Func<Task> act = async () => await _repository!.JoinStudyGroupAsync(5, 13);
+        await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task LeaveStudyGroupWithValidDataRemovesUserAsyncTest()
     {
         var user = new User { Id = 14, Name = "Sara" };
         var group = new StudyGroup
         {
-            StudyGroupId = 6, Name = "Group2", Subject = Subject.Math, CreateDate = DateTime.UtcNow,
+            StudyGroupId = 6,
+            Name = "Group2",
+            Subject = Subject.Math,
+            CreateDate = DateTime.UtcNow,
             Users = [user]
         };
 
@@ -203,24 +226,21 @@ public class StudyGroupRepositoryTests
         await _context.SaveChangesAsync();
 
         await _repository!.LeaveStudyGroupAsync(6, 14);
-        var updated = await _context.StudyGroups.Include(g => g.Users).
-            FirstAsync(g => g.StudyGroupId == 6);
+        var updated = await _context.StudyGroups.Include(g => g.Users)
+            .FirstAsync(g => g.StudyGroupId == 6);
 
-        Assert.That(updated.Users.Any(u => u.Id == 14), Is.False);
+        updated.Users.Should().NotContain(u => u.Id == 14);
     }
 
+    [Test]
     public async Task LeaveStudyGroupWithUserNotInGroupThrowsAsyncTest()
     {
-        var user = new User
-        {
-            Id = 15, 
-            Name = "Jon"
-        };
+        var user = new User { Id = 15, Name = "Jon" };
         var group = new StudyGroup
         {
             StudyGroupId = 7,
-            Name = "EmptyGroup", 
-            Subject = Subject.Physics, 
+            Name = "EmptyGroup",
+            Subject = Subject.Physics,
             CreateDate = DateTime.UtcNow,
             Users = []
         };
@@ -229,43 +249,50 @@ public class StudyGroupRepositoryTests
         _context.StudyGroups.Add(group);
         await _context.SaveChangesAsync();
 
-        Assert.ThrowsAsync<InvalidOperationException>(async () =>
-            await _repository!.LeaveStudyGroupAsync(7, 15));
+        Func<Task> act = async () => await _repository!.LeaveStudyGroupAsync(7, 15);
+        await act.Should().ThrowAsync<InvalidOperationException>();
     }
-
+    
+    [Test]
     public void LeaveStudyGroupWithNonexistentGroupThrowsTest()
     {
         _context!.Users.Add(new User { Id = 16, Name = "Ghost" });
         _context.SaveChanges();
 
-        Assert.ThrowsAsync<InvalidOperationException>(async () =>
-            await _repository!.LeaveStudyGroupAsync(999, 16));
+        var act = async () => await _repository!.LeaveStudyGroupAsync(999, 16);
+        act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task LeaveStudyGroupWithNonexistentUserThrowsAsyncTest()
     {
         var group = new StudyGroup
         {
-            StudyGroupId = 8, Name = "SoloGroup", Subject = Subject.Math, CreateDate = DateTime.UtcNow,
+            StudyGroupId = 8,
+            Name = "SoloGroup",
+            Subject = Subject.Math,
+            CreateDate = DateTime.UtcNow,
             Users = []
         };
         _context!.StudyGroups.Add(group);
         await _context.SaveChangesAsync();
 
-        Assert.ThrowsAsync<InvalidOperationException>(async () =>
-            await _repository!.LeaveStudyGroupAsync(8, 999));
+        var act = async () => await _repository!.LeaveStudyGroupAsync(8, 999);
+        await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task DeleteAllStudyGroupsRemovesAllAsyncTest()
     {
         _context!.StudyGroups.Add(new StudyGroup
             { Name = "A", Subject = Subject.Math, CreateDate = DateTime.UtcNow, Users = [] });
         _context!.StudyGroups.Add(new StudyGroup(name: "B", subject: Subject.Chemistry, createDate: DateTime.UtcNow,
-            users: new List<User>()));
+            users: []));
         await _context.SaveChangesAsync();
 
         await _repository!.DeleteAllStudyGroupsAsync();
 
-        Assert.That(await _context.StudyGroups.CountAsync(), Is.EqualTo(0));
+        var count = await _context.StudyGroups.CountAsync();
+        count.Should().Be(0);
     }
 }

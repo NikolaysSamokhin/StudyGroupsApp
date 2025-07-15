@@ -8,7 +8,7 @@ namespace StudyGroupsApp.Repositories;
 /// <summary>
 /// Repository for managing study groups.
 /// </summary>
-public class StudyGroupRepository(AppDbContext? context) : IStudyGroupRepository
+public class StudyGroupRepositoryUnit(AppDbContext? context) : IStudyGroupRepository
 {
     private readonly AppDbContext? _context = context;
 
