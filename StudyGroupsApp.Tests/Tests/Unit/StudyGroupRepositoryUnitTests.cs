@@ -7,10 +7,11 @@ using StudyGroupsApp.Repositories;
 
 namespace StudyGroupsApp.Tests.Tests.Unit;
 
-public class StudyGroupRepositoryTests
+[TestFixture]
+public class StudyGroupRepositoryUnitTests
 {
     private AppDbContext? _context;
-    private StudyGroupRepository? _repository;
+    private StudyGroupRepositoryUnit? _repository;
 
     [SetUp]
     public void Setup()
@@ -20,7 +21,7 @@ public class StudyGroupRepositoryTests
             .Options;
 
         _context = new AppDbContext(options);
-        _repository = new StudyGroupRepository(_context);
+        _repository = new StudyGroupRepositoryUnit(_context);
     }
 
     public async Task CreateStudyGroupWithValidDataSavesSuccessfullyAsyncTest()
@@ -40,6 +41,7 @@ public class StudyGroupRepositoryTests
         count.Should().Be(1);
     }
 
+    [Test]
     public void CreateStudyGroupWithInvalidSubjectThrowsTest()
     {
         var group = new StudyGroup
@@ -55,6 +57,7 @@ public class StudyGroupRepositoryTests
         act.Should().ThrowAsync<ArgumentException>();
     }
 
+    [Test]
     public async Task CreateStudyGroupWithDuplicateSubjectThrowsAsyncTest()
     {
         var group1 = new StudyGroup
@@ -77,12 +80,14 @@ public class StudyGroupRepositoryTests
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public void GetStudyGroupsWhenEmptyThrowsTest()
     {
         Func<Task> act = async () => await _repository!.GetStudyGroupsAsync();
         act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task GetStudyGroupsReturnsAllAsyncTest()
     {
         var group = new StudyGroup
@@ -99,6 +104,7 @@ public class StudyGroupRepositoryTests
         result.Should().HaveCount(1);
     }
 
+    [Test]
     public async Task SearchStudyGroupsBySubjectReturnsCorrectAsyncTest()
     {
         _context!.StudyGroups.Add(
@@ -122,7 +128,8 @@ public class StudyGroupRepositoryTests
         var result = await _repository!.SearchStudyGroupsAsync(Subject.Chemistry);
         result.Should().OnlyContain(g => g.Subject == Subject.Chemistry);
     }
-
+    
+    [Test]
     public void SearchStudyGroupsWithNoMatchesThrowsTest()
     {
         var act = async () => await _repository!.SearchStudyGroupsAsync(Subject.Physics);
@@ -151,6 +158,7 @@ public class StudyGroupRepositoryTests
         updated.Users.Should().Contain(u => u.Id == 10);
     }
 
+    [Test]
     public void JoinStudyGroupWithNonexistentGroupThrowsTest()
     {
         _context!.Users.Add(new User { Id = 11, Name = "Tom" });
@@ -160,6 +168,7 @@ public class StudyGroupRepositoryTests
         act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task JoinStudyGroupWithNonexistentUserThrowsAsyncTest()
     {
         var group = new StudyGroup
@@ -177,6 +186,7 @@ public class StudyGroupRepositoryTests
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task JoinStudyGroupWithUserAlreadyInThrowsAsyncTest()
     {
         var user = new User { Id = 13, Name = "Leo" };
@@ -197,6 +207,7 @@ public class StudyGroupRepositoryTests
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task LeaveStudyGroupWithValidDataRemovesUserAsyncTest()
     {
         var user = new User { Id = 14, Name = "Sara" };
@@ -220,6 +231,7 @@ public class StudyGroupRepositoryTests
         updated.Users.Should().NotContain(u => u.Id == 14);
     }
 
+    [Test]
     public async Task LeaveStudyGroupWithUserNotInGroupThrowsAsyncTest()
     {
         var user = new User { Id = 15, Name = "Jon" };
@@ -239,7 +251,8 @@ public class StudyGroupRepositoryTests
         Func<Task> act = async () => await _repository!.LeaveStudyGroupAsync(7, 15);
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
-
+    
+    [Test]
     public void LeaveStudyGroupWithNonexistentGroupThrowsTest()
     {
         _context!.Users.Add(new User { Id = 16, Name = "Ghost" });
@@ -249,6 +262,7 @@ public class StudyGroupRepositoryTests
         act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task LeaveStudyGroupWithNonexistentUserThrowsAsyncTest()
     {
         var group = new StudyGroup
@@ -266,6 +280,7 @@ public class StudyGroupRepositoryTests
         await act.Should().ThrowAsync<InvalidOperationException>();
     }
 
+    [Test]
     public async Task DeleteAllStudyGroupsRemovesAllAsyncTest()
     {
         _context!.StudyGroups.Add(new StudyGroup

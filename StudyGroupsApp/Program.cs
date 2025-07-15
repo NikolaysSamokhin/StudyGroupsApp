@@ -27,7 +27,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 // Register repositories
-builder.Services.AddScoped<IStudyGroupRepository, StudyGroupRepository>();
+builder.Services.AddScoped<IStudyGroupRepository, StudyGroupRepositoryUnit>();
 
 // Add controllers
 builder.Services.AddControllers();
