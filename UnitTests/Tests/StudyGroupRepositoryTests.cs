@@ -22,7 +22,6 @@ public class StudyGroupRepositoryTests
         _repository = new StudyGroupRepository(_context);
     }
 
-    [Test] // TC-R01
     public async Task CreateStudyGroupWithValidDataSavesSuccessfullyAsyncTest()
     {
         var group = new StudyGroup
@@ -39,7 +38,6 @@ public class StudyGroupRepositoryTests
         Assert.That(await _context!.StudyGroups.CountAsync(), Is.EqualTo(1));
     }
 
-    [Test] // TC-R02
     public void CreateStudyGroupWithInvalidSubjectThrowsTest()
     {
         var group = new StudyGroup
@@ -55,7 +53,6 @@ public class StudyGroupRepositoryTests
             await _repository!.CreateStudyGroupAsync(group));
     }
 
-    [Test] // TC-R03
     public async Task CreateStudyGroupWithDuplicateSubjectThrowsAsyncTest()
     {
         var group1 = new StudyGroup
@@ -73,18 +70,14 @@ public class StudyGroupRepositoryTests
         };
 
         await _repository!.CreateStudyGroupAsync(group1);
-        
-        // Attempt to create another group with the same subject    
         Assert.ThrowsAsync<InvalidOperationException>(async () => await _repository.CreateStudyGroupAsync(group2));
     }
 
-    [Test] // TC-R04
     public void GetStudyGroupsWhenEmptyThrowsTest()
     {
         Assert.ThrowsAsync<InvalidOperationException>(async () => await _repository!.GetStudyGroupsAsync());
     }
 
-    [Test] // TC-R05
     public async Task GetStudyGroupsReturnsAllAsyncTest()
     {
         var group = new StudyGroup
@@ -101,7 +94,6 @@ public class StudyGroupRepositoryTests
         Assert.That(result.Count, Is.EqualTo(1));
     }
 
-    [Test] // TC-R06
     public async Task SearchStudyGroupsBySubjectReturnsCorrectAsyncTest()
     {
         _context!.StudyGroups.Add(new StudyGroup
@@ -109,31 +101,25 @@ public class StudyGroupRepositoryTests
                 Subject = Subject.Math,
                 CreateDate = DateTime.UtcNow,
                 Users = []
-                
             });
-        
         _context.StudyGroups.Add(new StudyGroup
             { Name = "ChemG",
                 Subject = Subject.Chemistry,
                 CreateDate = DateTime.UtcNow,
                 Users = []
-                
             });
-        
         await _context.SaveChangesAsync();
 
         var result = await _repository!.SearchStudyGroupsAsync(Subject.Chemistry);
         Assert.That(result.All(g => g.Subject == Subject.Chemistry));
     }
 
-    [Test] // TC-R07
     public void SearchStudyGroupsWithNoMatchesThrowsTest()
     {
         Assert.ThrowsAsync<InvalidOperationException>(async () =>
             await _repository!.SearchStudyGroupsAsync(Subject.Physics));
     }
 
-    [Test] // TC-R08
     public async Task JoinStudyGroupWithValidDataAddsUserAsyncTest()
     {
         var user = new User { Id = 10, Name = "Mike" };
@@ -157,7 +143,6 @@ public class StudyGroupRepositoryTests
         Assert.That(updated.Users.Any(u => u.Id == 10));
     }
 
-    [Test] // TC-R09
     public void JoinStudyGroupWithNonexistentGroupThrowsTest()
     {
         _context!.Users.Add(new User { Id = 11, Name = "Tom" });
@@ -167,7 +152,6 @@ public class StudyGroupRepositoryTests
             await _repository!.JoinStudyGroupAsync(999, 11));
     }
 
-    [Test] // TC-R10
     public async Task JoinStudyGroupWithNonexistentUserThrowsAsyncTest()
     {
         var group = new StudyGroup
@@ -185,7 +169,6 @@ public class StudyGroupRepositoryTests
             await _repository!.JoinStudyGroupAsync(4, 999));
     }
 
-    [Test] // TC-R11
     public async Task JoinStudyGroupWithUserAlreadyInThrowsAsyncTest()
     {
         var user = new User { Id = 13, Name = "Leo" };
@@ -206,7 +189,6 @@ public class StudyGroupRepositoryTests
             await _repository!.JoinStudyGroupAsync(5, 13));
     }
 
-    [Test] // TC-R12
     public async Task LeaveStudyGroupWithValidDataRemovesUserAsyncTest()
     {
         var user = new User { Id = 14, Name = "Sara" };
@@ -227,7 +209,6 @@ public class StudyGroupRepositoryTests
         Assert.That(updated.Users.Any(u => u.Id == 14), Is.False);
     }
 
-    [Test] // TC-R13
     public async Task LeaveStudyGroupWithUserNotInGroupThrowsAsyncTest()
     {
         var user = new User
@@ -252,7 +233,6 @@ public class StudyGroupRepositoryTests
             await _repository!.LeaveStudyGroupAsync(7, 15));
     }
 
-    [Test] // TC-R14
     public void LeaveStudyGroupWithNonexistentGroupThrowsTest()
     {
         _context!.Users.Add(new User { Id = 16, Name = "Ghost" });
@@ -262,7 +242,6 @@ public class StudyGroupRepositoryTests
             await _repository!.LeaveStudyGroupAsync(999, 16));
     }
 
-    [Test] // TC-R15
     public async Task LeaveStudyGroupWithNonexistentUserThrowsAsyncTest()
     {
         var group = new StudyGroup
@@ -277,7 +256,6 @@ public class StudyGroupRepositoryTests
             await _repository!.LeaveStudyGroupAsync(8, 999));
     }
 
-    [Test] // TC-R16
     public async Task DeleteAllStudyGroupsRemovesAllAsyncTest()
     {
         _context!.StudyGroups.Add(new StudyGroup
