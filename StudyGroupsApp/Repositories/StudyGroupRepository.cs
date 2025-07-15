@@ -24,10 +24,35 @@ public class StudyGroupRepository(AppDbContext? context) : IStudyGroupRepository
             throw new ArgumentException("Invalid subject value.", nameof(studyGroup.Subject));
 
         var exists = await _context.StudyGroups.AnyAsync(g => g.Subject == studyGroup.Subject);
-
         if (exists)
             throw new InvalidOperationException("A study group with the same subject already exists.");
 
+        // Получить ID всех переданных пользователей
+        var userIds = studyGroup.Users.Select(u => u.Id).ToList();
+
+        // Найти существующих пользователей
+        var existingUsers = await _context.Users
+            .Where(u => userIds.Contains(u.Id))
+            .ToListAsync();
+
+        // Вычислить ID отсутствующих пользователей
+        var existingIds = existingUsers.Select(u => u.Id).ToHashSet();
+        var missingUsers = studyGroup.Users
+            .Where(u => !existingIds.Contains(u.Id))
+            .ToList();
+
+        // Добавить отсутствующих пользователей
+        if (missingUsers.Count > 0)
+        {
+            _context.Users.AddRange(missingUsers);
+            await _context.SaveChangesAsync(); // сохранить, чтобы они появились в БД
+            existingUsers.AddRange(missingUsers);
+        }
+
+        // Назначить отслеживаемые пользователи группе
+        studyGroup.Users = existingUsers;
+
+        // Сохранить группу
         _context.StudyGroups.Add(studyGroup);
         await _context.SaveChangesAsync();
     }
@@ -39,7 +64,7 @@ public class StudyGroupRepository(AppDbContext? context) : IStudyGroupRepository
     /// <exception cref="InvalidOperationException">If no groups exist.</exception>
     public async Task<List<StudyGroup>> GetStudyGroupsAsync()
     {
-        var groups = await _context.StudyGroups.Include(sg => sg.Users).ToListAsync();
+        var groups = await _context!.StudyGroups.Include(sg => sg.Users).ToListAsync();
         if (groups == null || groups.Count == 0)
             throw new InvalidOperationException("No study groups have been created.");
         return groups;

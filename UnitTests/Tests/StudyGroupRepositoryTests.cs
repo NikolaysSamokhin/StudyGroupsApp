@@ -59,11 +59,22 @@ public class StudyGroupRepositoryTests
     public async Task CreateStudyGroupWithDuplicateSubjectThrowsAsyncTest()
     {
         var group1 = new StudyGroup
-            { Name = "Chem1", Subject = Subject.Chemistry, CreateDate = DateTime.UtcNow, Users = [] };
+        {
+            Name = "Chem1",
+            Subject = Subject.Chemistry,
+            CreateDate = DateTime.UtcNow,
+            Users = []
+        };
         var group2 = new StudyGroup
-            { Name = "Chem2", Subject = Subject.Chemistry, CreateDate = DateTime.UtcNow, Users = [] };
+        {
+            Name = "Chem2",
+            Subject = Subject.Chemistry,
+            CreateDate = DateTime.UtcNow, Users = []
+        };
 
         await _repository!.CreateStudyGroupAsync(group1);
+        
+        // Attempt to create another group with the same subject    
         Assert.ThrowsAsync<InvalidOperationException>(async () => await _repository.CreateStudyGroupAsync(group2));
     }
 
@@ -78,7 +89,10 @@ public class StudyGroupRepositoryTests
     {
         var group = new StudyGroup
         {
-            Name = "PhysicsGroup", Subject = Subject.Physics, CreateDate = DateTime.UtcNow, Users = []
+            Name = "PhysicsGroup",
+            Subject = Subject.Physics,
+            CreateDate = DateTime.UtcNow,
+            Users = []
         };
         _context!.StudyGroups.Add(group);
         await _context.SaveChangesAsync();
@@ -91,9 +105,21 @@ public class StudyGroupRepositoryTests
     public async Task SearchStudyGroupsBySubjectReturnsCorrectAsyncTest()
     {
         _context!.StudyGroups.Add(new StudyGroup
-            { Name = "MathG", Subject = Subject.Math, CreateDate = DateTime.UtcNow, Users = [] });
+            { Name = "MathG",
+                Subject = Subject.Math,
+                CreateDate = DateTime.UtcNow,
+                Users = []
+                
+            });
+        
         _context.StudyGroups.Add(new StudyGroup
-            { Name = "ChemG", Subject = Subject.Chemistry, CreateDate = DateTime.UtcNow, Users = [] });
+            { Name = "ChemG",
+                Subject = Subject.Chemistry,
+                CreateDate = DateTime.UtcNow,
+                Users = []
+                
+            });
+        
         await _context.SaveChangesAsync();
 
         var result = await _repository!.SearchStudyGroupsAsync(Subject.Chemistry);
@@ -113,7 +139,10 @@ public class StudyGroupRepositoryTests
         var user = new User { Id = 10, Name = "Mike" };
         var group = new StudyGroup
         {
-            StudyGroupId = 3, Name = "Group1", Subject = Subject.Math, CreateDate = DateTime.UtcNow,
+            StudyGroupId = 3,
+            Name = "Group1",
+            Subject = Subject.Math,
+            CreateDate = DateTime.UtcNow,
             Users = []
         };
 
@@ -143,7 +172,10 @@ public class StudyGroupRepositoryTests
     {
         var group = new StudyGroup
         {
-            StudyGroupId = 4, Name = "Chem", Subject = Subject.Chemistry, CreateDate = DateTime.UtcNow,
+            StudyGroupId = 4,
+            Name = "Chem",
+            Subject = Subject.Chemistry, 
+            CreateDate = DateTime.UtcNow,
             Users = []
         };
         _context!.StudyGroups.Add(group);
@@ -159,7 +191,10 @@ public class StudyGroupRepositoryTests
         var user = new User { Id = 13, Name = "Leo" };
         var group = new StudyGroup
         {
-            StudyGroupId = 5, Name = "Physics", Subject = Subject.Physics, CreateDate = DateTime.UtcNow,
+            StudyGroupId = 5,
+            Name = "Physics",
+            Subject = Subject.Physics,
+            CreateDate = DateTime.UtcNow,
             Users = [user]
         };
 
@@ -195,10 +230,17 @@ public class StudyGroupRepositoryTests
     [Test] // TC-R13
     public async Task LeaveStudyGroupWithUserNotInGroupThrowsAsyncTest()
     {
-        var user = new User { Id = 15, Name = "Jon" };
+        var user = new User
+        {
+            Id = 15, 
+            Name = "Jon"
+        };
         var group = new StudyGroup
         {
-            StudyGroupId = 7, Name = "EmptyGroup", Subject = Subject.Physics, CreateDate = DateTime.UtcNow,
+            StudyGroupId = 7,
+            Name = "EmptyGroup", 
+            Subject = Subject.Physics, 
+            CreateDate = DateTime.UtcNow,
             Users = []
         };
 

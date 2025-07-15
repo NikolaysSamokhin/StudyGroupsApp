@@ -46,31 +46,31 @@ public class StudyGroup
     /// Gets or sets the unique identifier of the study group.
     /// </summary>
     [Key]
-    public int StudyGroupId { get; set; }
+    public int StudyGroupId { get; init; }
 
     /// <summary>
     /// Gets or sets the name of the study group.
     /// </summary>
     [Required]
     [StringLength(30, MinimumLength = 5)]
-    public string Name { get; set; }
+    public string Name { get; init; }
 
     /// <summary>
     /// Gets or sets the subject of the study group.
     /// </summary>
     [Required]
-    public Subject Subject { get; set; }
+    public Subject Subject { get; init; }
 
     /// <summary>
     /// Gets or sets the creation date of the study group.
     /// </summary>
     [Required]
-    public DateTime CreateDate { get; set; }
+    public DateTime CreateDate { get; init; }
 
     /// <summary>
     /// Gets the list of users in the study group.
     /// </summary>
-    public List<User> Users { get; init; } = [];
+    public List<User> Users { get; set; }
 
     /// <summary>
     /// Adds a user to the study group.
