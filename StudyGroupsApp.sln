@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyGroupsApp", "StudyGroupsApp\StudyGroupsApp.csproj", "{521091EA-4A19-4CDF-98DD-F2D79CFB2179}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyGroupsTests", "StudyGroupsTests\StudyGroupsTests.csproj", "{3AE34A12-03ED-4DE6-85DB-6C4E349538FD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyGroupsTest", "StudyGroupsTest\StudyGroupsTest.csproj", "{777CCA7C-9A32-4520-B9D8-D96DAA7F66AB}"
 EndProject
 Global
@@ -16,10 +14,6 @@ Global
 		{521091EA-4A19-4CDF-98DD-F2D79CFB2179}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{521091EA-4A19-4CDF-98DD-F2D79CFB2179}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{521091EA-4A19-4CDF-98DD-F2D79CFB2179}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3AE34A12-03ED-4DE6-85DB-6C4E349538FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3AE34A12-03ED-4DE6-85DB-6C4E349538FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3AE34A12-03ED-4DE6-85DB-6C4E349538FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3AE34A12-03ED-4DE6-85DB-6C4E349538FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{777CCA7C-9A32-4520-B9D8-D96DAA7F66AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{777CCA7C-9A32-4520-B9D8-D96DAA7F66AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{777CCA7C-9A32-4520-B9D8-D96DAA7F66AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
