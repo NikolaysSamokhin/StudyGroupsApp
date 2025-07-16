@@ -10,8 +10,6 @@ namespace StudyGroupsApp.Repositories;
 /// </summary>
 public class StudyGroupRepositoryUnit(AppDbContext? context) : IStudyGroupRepository
 {
-    private readonly AppDbContext? _context = context;
-
     /// <summary>
     /// Creates a new study group asynchronously.
     /// </summary>
@@ -20,41 +18,36 @@ public class StudyGroupRepositoryUnit(AppDbContext? context) : IStudyGroupReposi
     /// <exception cref="InvalidOperationException">If group with same subject exists.</exception>
     public async Task CreateStudyGroupAsync(StudyGroup studyGroup)
     {
-        if (!Enum.IsDefined(typeof(Subject), studyGroup.Subject))
+        if (!Enum.IsDefined(studyGroup.Subject))
             throw new ArgumentException("Invalid subject value.", nameof(studyGroup.Subject));
 
-        var exists = await _context.StudyGroups.AnyAsync(g => g.Subject == studyGroup.Subject);
+        var exists = await context?.StudyGroups.AnyAsync(g => g.Subject == studyGroup.Subject)!;
         if (exists)
             throw new InvalidOperationException("A study group with the same subject already exists.");
 
-        // Получить ID всех переданных пользователей
         var userIds = studyGroup.Users.Select(u => u.Id).ToList();
 
-        // Найти существующих пользователей
-        var existingUsers = await _context.Users
+        var existingUsers = await context.Users
             .Where(u => userIds.Contains(u.Id))
             .ToListAsync();
 
-        // Вычислить ID отсутствующих пользователей
+
         var existingIds = existingUsers.Select(u => u.Id).ToHashSet();
         var missingUsers = studyGroup.Users
             .Where(u => !existingIds.Contains(u.Id))
             .ToList();
 
-        // Добавить отсутствующих пользователей
         if (missingUsers.Count > 0)
         {
-            _context.Users.AddRange(missingUsers);
-            await _context.SaveChangesAsync(); // сохранить, чтобы они появились в БД
+            context.Users.AddRange(missingUsers);
+            await context.SaveChangesAsync();  
             existingUsers.AddRange(missingUsers);
         }
 
-        // Назначить отслеживаемые пользователи группе
         studyGroup.Users = existingUsers;
 
-        // Сохранить группу
-        _context.StudyGroups.Add(studyGroup);
-        await _context.SaveChangesAsync();
+        context.StudyGroups.Add(studyGroup);
+        await context.SaveChangesAsync();
     }
 
     /// <summary>
@@ -64,7 +57,7 @@ public class StudyGroupRepositoryUnit(AppDbContext? context) : IStudyGroupReposi
     /// <exception cref="InvalidOperationException">If no groups exist.</exception>
     public async Task<List<StudyGroup>> GetStudyGroupsAsync()
     {
-        var groups = await _context!.StudyGroups.Include(sg => sg.Users).ToListAsync();
+        var groups = await context!.StudyGroups.Include(sg => sg.Users).ToListAsync();
         if (groups == null || groups.Count == 0)
             throw new InvalidOperationException("No study groups have been created.");
         return groups;
@@ -78,7 +71,7 @@ public class StudyGroupRepositoryUnit(AppDbContext? context) : IStudyGroupReposi
     /// <exception cref="InvalidOperationException">Thrown if no study groups are found for the given subject.</exception>
     public async Task<List<StudyGroup>> SearchStudyGroupsAsync(Subject subject)
     {
-        var groups = await _context.StudyGroups
+        var groups = await context!.StudyGroups
             .Where(sg => sg.Subject == subject)
             .Include(sg => sg.Users)
             .ToListAsync();
@@ -99,12 +92,12 @@ public class StudyGroupRepositoryUnit(AppDbContext? context) : IStudyGroupReposi
     /// </exception>
     public async Task JoinStudyGroupAsync(int studyGroupId, int userId)
     {
-        var group = await _context.StudyGroups.Include(sg => sg.Users)
+        var group = await context!.StudyGroups.Include(sg => sg.Users)
             .FirstOrDefaultAsync(sg => sg.StudyGroupId == studyGroupId);
         if (group == null)
             throw new InvalidOperationException("Study group not found.");
 
-        var user = await _context.Users.FindAsync(userId);
+        var user = await context.Users.FindAsync(userId);
         if (user == null)
             throw new InvalidOperationException("User not found.");
 
@@ -112,7 +105,7 @@ public class StudyGroupRepositoryUnit(AppDbContext? context) : IStudyGroupReposi
             throw new InvalidOperationException("User is already a member of the study group.");
 
         group.Users.Add(user);
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 
     /// <summary>
@@ -125,12 +118,12 @@ public class StudyGroupRepositoryUnit(AppDbContext? context) : IStudyGroupReposi
     /// </exception>
     public async Task LeaveStudyGroupAsync(int studyGroupId, int userId)
     {
-        var group = await _context.StudyGroups.Include(sg => sg.Users)
+        var group = await context!.StudyGroups.Include(sg => sg.Users)
             .FirstOrDefaultAsync(sg => sg.StudyGroupId == studyGroupId);
         if (group == null)
             throw new InvalidOperationException("Study group not found.");
 
-        var user = await _context.Users.FindAsync(userId);
+        var user = await context.Users.FindAsync(userId);
         if (user == null)
             throw new InvalidOperationException("User not found.");
 
@@ -138,7 +131,7 @@ public class StudyGroupRepositoryUnit(AppDbContext? context) : IStudyGroupReposi
             throw new InvalidOperationException("User is not a member of the study group.");
 
         group.Users.Remove(user);
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 
     /// <summary>
@@ -147,7 +140,7 @@ public class StudyGroupRepositoryUnit(AppDbContext? context) : IStudyGroupReposi
     /// <returns>A task that represents the asynchronous delete operation.</returns>
     public async Task DeleteAllStudyGroupsAsync()
     {
-        _context.StudyGroups.RemoveRange(_context.StudyGroups);
-        await _context.SaveChangesAsync();
+        context!.StudyGroups.RemoveRange(context.StudyGroups);
+        await context.SaveChangesAsync();
     }
 }

@@ -3,8 +3,15 @@ using StudyGroupsApp.Models;
 
 namespace StudyGroupsApp.Data;
 
+/// <summary>
+/// Provides methods to seed the database with initial data for users and study groups.
+/// </summary>
 public static class DbInitializer
 {
+    /// <summary>
+    /// Seeds the database with default users and study groups if they do not already exist.
+    /// </summary>
+    /// <param name="context">The database context to seed.</param>
     public static void Seed(AppDbContext context)
     {
         // Apply pending migrations or ensure DB is created
@@ -82,5 +89,4 @@ public static class DbInitializer
         context.StudyGroups.AddRange(group1, group2, group3, group4, group5, group6);
         context.SaveChanges();
     }
-
 }
