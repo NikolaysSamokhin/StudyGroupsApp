@@ -1,0 +1,181 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsTest/StudyGroupsTest.csproj": {}
+  },
+  "projects": {
+    "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/StudyGroupsApp.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/StudyGroupsApp.csproj",
+        "projectName": "StudyGroupsApp",
+        "projectPath": "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/StudyGroupsApp.csproj",
+        "packagesPath": "/Users/nikolasamokhin/.nuget/packages/",
+        "outputPath": "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/nikolasamokhin/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[9.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.301/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsTest/StudyGroupsTest.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsTest/StudyGroupsTest.csproj",
+        "projectName": "StudyGroupsTest",
+        "projectPath": "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsTest/StudyGroupsTest.csproj",
+        "packagesPath": "/Users/nikolasamokhin/.nuget/packages/",
+        "outputPath": "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsTest/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/nikolasamokhin/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/StudyGroupsApp.csproj": {
+                "projectPath": "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/StudyGroupsApp.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[8.5.0, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.12.0, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[4.2.2, )"
+            },
+            "NUnit.Analyzers": {
+              "target": "Package",
+              "version": "[4.4.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[4.6.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[6.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.301/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

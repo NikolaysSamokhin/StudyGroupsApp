@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/nikolasamokhin/RiderProjects/StudyGroupsApp/StudyGroupsApp/StudyGroupsApp.csproj": {}
+    "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/StudyGroupsApp.csproj": {}
   },
   "projects": {
-    "/Users/nikolasamokhin/RiderProjects/StudyGroupsApp/StudyGroupsApp/StudyGroupsApp.csproj": {
+    "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/StudyGroupsApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/nikolasamokhin/RiderProjects/StudyGroupsApp/StudyGroupsApp/StudyGroupsApp.csproj",
+        "projectUniqueName": "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/StudyGroupsApp.csproj",
         "projectName": "StudyGroupsApp",
-        "projectPath": "/Users/nikolasamokhin/RiderProjects/StudyGroupsApp/StudyGroupsApp/StudyGroupsApp.csproj",
+        "projectPath": "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/StudyGroupsApp.csproj",
         "packagesPath": "/Users/nikolasamokhin/.nuget/packages/",
-        "outputPath": "/Users/nikolasamokhin/RiderProjects/StudyGroupsApp/StudyGroupsApp/obj/",
+        "outputPath": "/Users/nikolasamokhin/RiderProjects/Stud/StudyGroupsApp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/nikolasamokhin/.nuget/NuGet/NuGet.Config"
